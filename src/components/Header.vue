@@ -27,9 +27,12 @@ export default {
   justify-content: space-between;
   background: $foreground-color;
   color: $background-color;
-  margin: -8px -8px 0 -8px;
   padding: 1em 2em;
   font-weight: bold;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .link {

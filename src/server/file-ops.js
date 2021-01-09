@@ -1,5 +1,5 @@
 import { dialog } from "electron";
-import * as fs from 'fs';
+import * as fs from "fs";
 
 export async function promptSavePath() {
   const file = await dialog.showSaveDialog({

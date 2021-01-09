@@ -2,7 +2,7 @@
   <div id="app">
     <HomePage v-if="showHome" />
     <Loader v-if="showLoader" />
-    <Planner v-if="!!data" v-bind:data="data" />
+    <Planner v-if="!!data" :data="data" />
   </div>
 </template>
 

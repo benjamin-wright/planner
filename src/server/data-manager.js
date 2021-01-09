@@ -1,5 +1,6 @@
 import path from "path";
 import { promptSavePath, promptLoadPath, saveData, loadData } from "./file-ops";
+import { DateTime } from "luxon";
 
 export default class DataManager {
   constructor() {
@@ -27,7 +28,8 @@ export default class DataManager {
       this.data = {
         name: path.basename(filePath),
         config: {
-          cycleWeeks: 8
+          cycleWeeks: 8,
+          startDate: getNextMonday()
         },
         plan: []
       };
@@ -38,4 +40,12 @@ export default class DataManager {
       this.data = null;
     }
   }
+}
+
+function getNextMonday() {
+  const today = DateTime.local();
+  const lastMonday = today.minus({ days: today.weekday - 1 });
+  const nextMonday = lastMonday.plus({ weeks: 1 });
+  
+  return nextMonday.toFormat("yyyy-MM-dd");
 }

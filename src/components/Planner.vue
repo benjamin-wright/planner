@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <Header v-bind:filename="data.name" />
-    <h1>Data yeah!</h1>
+  <div class="container">
+    <Header :filename="data.name" />
+    <PlanView :plan="data.plan" :config="data.config" />
   </div>
 </template>
 
 <script>
 import Header from "./Header";
+import PlanView from "./PlanView";
 
 export default {
   name: "Planner",
@@ -14,9 +15,14 @@ export default {
     data: Object
   },
   components: {
-    Header
+    Header,
+    PlanView
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  padding-top: 4em;
+}
+</style>
