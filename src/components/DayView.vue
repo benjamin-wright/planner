@@ -1,20 +1,39 @@
 <template>
-  <div class="horizontal">
+  <div class="grid">
     <p>{{ dayString }}</p>
     <div class="horizontal">
-      <label>{{ "start" }}</label>
-      <label>{{ "end" }}</label>
+      <label on:click="">{{ shift.start }}</label>
+      &rarr;
+      <label>{{ shift.end }}</label>
     </div>
+    <TimePicker
+      v-if="picking"
+      :time="currentTime"
+      :min="minTime"
+      :max="maxTime"
+    />
   </div>
 </template>
 
 <script>
+import TimePicker from "./TimePicker";
+import { DateTime } from "luxon";
+
 export default {
   name: "DayView",
   props: {
     date: Object,
     weekNum: Number,
-    dayNum: Number
+    dayNum: Number,
+    shift: Object
+  },
+  data: function() {
+    return {
+      picking: false
+    };
+  },
+  components: {
+    TimePicker
   },
   computed: {
     dayString: function() {
@@ -22,8 +41,13 @@ export default {
     }
   },
   methods: {
-    getId: function(label) {
-      return `${label}-${this.weekNum}-${this.dayNum}`;
+    pickStart: function() {
+      this.picking = true;
+
+      this.minTime = DateTime.fromObject(this.date);
+      this.minTime.set({ hours: 0, minutes: 0 });
+
+      this.maxTime.set({ hours: 0, minutes: 0 });
     }
   }
 };
@@ -31,6 +55,11 @@ export default {
 
 <style scoped lang="scss">
 @import "@/scss/colors.scss";
+
+.grid {
+  display: grid;
+  grid-template-columns: 3em 9em;
+}
 
 .horizontal {
   display: flex;
@@ -42,7 +71,7 @@ export default {
   }
 }
 
-input {
-  display: none;
+label {
+  cursor: pointer;
 }
 </style>

@@ -9,3 +9,7 @@ export function clearData() {
 export function loadData() {
   window.ipcRenderer.send("load-data");
 }
+
+export function newShift(date) {
+  window.ipcRenderer.send("new-shift", date.toFormat("yyyy-MM-dd"));
+}

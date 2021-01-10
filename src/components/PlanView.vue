@@ -5,6 +5,7 @@
       :key="week.key"
       :date="week.startDate"
       :weekNum="week.key"
+      :shifts="week.shifts"
     />
   </div>
 </template>
@@ -22,12 +23,19 @@ export default {
   computed: {
     weeks: function() {
       const weeks = [];
-      const start = DateTime.fromISO(this.config.startDate);
+      const start = DateTime.fromFormat(this.config.startDate, "yyyy-MM-dd");
 
       for (let i = 0; i < this.config.cycleWeeks; i++) {
+        const weekStart = start.plus({ weeks: i });
+        const shifts = this.plan.filter(
+          shift =>
+            weekStart.weekNumber ==
+            DateTime.fromFormat(shift.date, "yyyy-MM-dd").weekNumber
+        );
         weeks.push({
           key: i,
-          startDate: start.plus({ weeks: i })
+          startDate: weekStart,
+          shifts
         });
       }
 

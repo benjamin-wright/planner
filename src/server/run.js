@@ -30,4 +30,11 @@ export default function run() {
 
     event.reply("updated-data", manager.data);
   });
+
+  ipcMain.on("new-shift", (event, date) => {
+    console.log(`adding new shift for ${date}`);
+    manager.newShift(date);
+
+    event.reply("updated-data", manager.data);
+  });
 }

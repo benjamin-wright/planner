@@ -40,12 +40,29 @@ export default class DataManager {
       this.data = null;
     }
   }
+
+  newShift(date) {
+    this.data.plan.forEach(shift => {
+      if (shift.date == date) {
+        console.error(`Shift already exists for date: ${date}`);
+        return;
+      }
+    });
+
+    this.data.plan.push({
+      date,
+      start: "09:00",
+      end: "17:00"
+    });
+  }
 }
 
 function getNextMonday() {
   const today = DateTime.local();
+  today.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+
   const lastMonday = today.minus({ days: today.weekday - 1 });
   const nextMonday = lastMonday.plus({ weeks: 1 });
-  
+
   return nextMonday.toFormat("yyyy-MM-dd");
 }
