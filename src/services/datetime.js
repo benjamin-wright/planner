@@ -19,3 +19,12 @@ export function getNumberSuffix(num) {
       return th;
   }
 }
+
+export function getTimeParts(time) {
+  const parts = time.split(":");
+
+  return {
+    hour: Number.parseInt(parts[0]),
+    minute: Number.parseInt(parts[1])
+  };
+}

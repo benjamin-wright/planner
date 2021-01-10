@@ -69,6 +69,8 @@ export default {
   flex-shrink: 0;
   padding: 1em;
 
+  user-select: none;
+
   > * {
     margin: 0.2em 0;
   }

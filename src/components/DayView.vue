@@ -2,7 +2,7 @@
   <div class="grid">
     <p>{{ dayString }}</p>
     <div class="horizontal">
-      <label on:click="">{{ shift.start }}</label>
+      <label v-on:click="pickStart()">{{ shift.start }}</label>
       &rarr;
       <label>{{ shift.end }}</label>
     </div>
@@ -11,6 +11,7 @@
       :time="currentTime"
       :min="minTime"
       :max="maxTime"
+      v-on:picked="picked()"
     />
   </div>
 </template>
@@ -18,6 +19,7 @@
 <script>
 import TimePicker from "./TimePicker";
 import { DateTime } from "luxon";
+import { getTimeParts } from "../services/datetime";
 
 export default {
   name: "DayView",
@@ -29,7 +31,10 @@ export default {
   },
   data: function() {
     return {
-      picking: false
+      picking: false,
+      currentTime: null,
+      minTime: null,
+      maxTime: null
     };
   },
   components: {
@@ -44,10 +49,16 @@ export default {
     pickStart: function() {
       this.picking = true;
 
-      this.minTime = DateTime.fromObject(this.date);
-      this.minTime.set({ hours: 0, minutes: 0 });
+      this.currentTime = this.shift.start;
 
-      this.maxTime.set({ hours: 0, minutes: 0 });
+      this.minTime = DateTime.fromMillis(this.date.toMillis());
+      this.minTime.set({ hour: 0, minute: 0 });
+
+      this.maxTime = DateTime.fromMillis(this.date.toMillis());
+      this.maxTime.set(getTimeParts(this.shift.end));
+    },
+    picked: function() {
+      this.picking = false;
     }
   }
 };
@@ -59,12 +70,16 @@ export default {
 .grid {
   display: grid;
   grid-template-columns: 3em 9em;
+  user-select: none;
 }
 
 .horizontal {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  background: $foreground-color;
+  color: $background-color;
 
   > * {
     margin: 0 0.5em;

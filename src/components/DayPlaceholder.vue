@@ -42,6 +42,7 @@ button {
   font-size: 0.75em;
   padding: 0.3em 1.25em;
   width: 100%;
+  cursor: pointer;
 
   &:hover,
   &:focus {
