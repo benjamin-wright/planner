@@ -51,11 +51,10 @@ export default {
 
       this.currentTime = this.shift.start;
 
-      this.minTime = DateTime.fromMillis(this.date.toMillis());
-      this.minTime.set({ hour: 0, minute: 0 });
+      const day = DateTime.fromMillis(this.date.toMillis());
 
-      this.maxTime = DateTime.fromMillis(this.date.toMillis());
-      this.maxTime.set(getTimeParts(this.shift.end));
+      this.minTime = day.set({ hour: 0, minute: 0 });
+      this.maxTime = day.set(getTimeParts(this.shift.end));
     },
     picked: function() {
       this.picking = false;
