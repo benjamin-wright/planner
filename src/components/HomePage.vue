@@ -2,8 +2,8 @@
   <div class="vertical">
     <h1>Welcome to the Planner app!</h1>
     <div class="horizontal">
-      <button class="button" v-on:click="newData()">New</button>
-      <button class="button" v-on:click="loadData()">Load</button>
+      <button class="button" @click="newData()">New</button>
+      <button class="button" @click="loadData()">Load</button>
     </div>
   </div>
 </template>

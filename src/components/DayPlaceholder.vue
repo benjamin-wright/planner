@@ -1,7 +1,7 @@
 <template>
   <div class="horizontal">
     <p>{{ dayString }}</p>
-    <button v-on:click="newShift(date)">+</button>
+    <button @click="newShift(date)">+</button>
   </div>
 </template>
 

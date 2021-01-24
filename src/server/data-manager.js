@@ -15,6 +15,7 @@ export default class DataManager {
     try {
       const fileName = await promptLoadPath();
       this.data = await loadData(fileName);
+      this.path = fileName;
     } catch (err) {
       console.error(err);
       this.data = null;
@@ -34,7 +35,18 @@ export default class DataManager {
         plan: []
       };
 
+      this.path = filePath;
+
       await saveData(filePath, this.data);
+    } catch (err) {
+      console.error(err);
+      this.data = null;
+    }
+  }
+
+  async save() {
+    try {
+      await saveData(this.path, this.data);
     } catch (err) {
       console.error(err);
       this.data = null;
@@ -52,7 +64,16 @@ export default class DataManager {
     this.data.plan.push({
       date,
       start: "09:00",
-      end: "17:00"
+      end: "16:45"
+    });
+  }
+
+  updateShift(date, start, end) {
+    this.data.plan.forEach(shift => {
+      if (shift.date == date) {
+        shift.start = start;
+        shift.end = end;
+      }
     });
   }
 }

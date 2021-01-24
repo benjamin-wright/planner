@@ -1,19 +1,18 @@
 <template>
   <div class="mask">
-    <div class="panel">
+    <div
+      class="panel"
+      v-on:keyup.up="minuteUp()"
+      v-on:keyup.down="minuteDown()"
+    >
       <div class="picker">
-        <NumberPicker
-          :number="hour"
-          :min="minHour"
-          :max="maxHour"
-          :increment="1"
-        />
+        <NumberPicker :number="hour" @up="hourUp()" @down="hourDown()" />
         <span>:</span>
-        <NumberPicker :number="minute" :min="0" :max="60" :increment="15" />
+        <NumberPicker :number="minute" @up="minuteUp()" @down="minuteDown()" />
       </div>
       <div class="buttons">
-        <button v-on:click="$emit('picked')">ok</button>
-        <button v-on:click="$emit('cancel')">cancel</button>
+        <button @click="$emit('picked', { hour, minute })">ok</button>
+        <button @click="$emit('cancel')">cancel</button>
       </div>
     </div>
   </div>
@@ -22,6 +21,20 @@
 <script>
 import NumberPicker from "./NumberPicker";
 
+function minCheck(hour, minute, minimum) {
+  const valueMinutes = hour * 60 + minute;
+  const minMinutes = minimum.hour * 60 + minimum.minute;
+
+  return valueMinutes < minMinutes;
+}
+
+function maxCheck(hour, minute, maximum) {
+  const valueMinutes = hour * 60 + minute;
+  const maxMinutes = maximum.hour * 60 + maximum.minute;
+
+  return valueMinutes > maxMinutes;
+}
+
 export default {
   name: "TimePicker",
   props: {
@@ -29,22 +42,58 @@ export default {
     min: Object,
     max: Object
   },
-  computed: {
-    hour: function() {
-      return Number.parseInt(this.time.split(":")[0]);
-    },
-    minute: function() {
-      return Number.parseInt(this.time.split(":")[1]);
-    },
-    minHour: function() {
-      return this.min.hour;
-    },
-    maxHour: function() {
-      return this.max.hour;
-    }
+  data: function() {
+    return {
+      hour: Number.parseInt(this.time.split(":")[0]),
+      minute: Number.parseInt(this.time.split(":")[1])
+    };
   },
   components: {
     NumberPicker
+  },
+  methods: {
+    hourUp: function() {
+      this.hour += 1;
+
+      if (maxCheck(this.hour, this.minute, this.max)) {
+        this.minute = this.max.minute;
+        this.hour = this.max.hour;
+      }
+    },
+    hourDown: function() {
+      this.hour -= 1;
+
+      if (minCheck(this.hour, this.minute, this.min)) {
+        this.minute = this.min.minute;
+        this.hour = this.min.hour;
+      }
+    },
+    minuteUp: function() {
+      this.minute += 15;
+
+      if (this.minute > 45) {
+        this.minute = 0;
+        this.hour += 1;
+      }
+
+      if (maxCheck(this.hour, this.minute, this.max)) {
+        this.minute = this.max.minute;
+        this.hour = this.max.hour;
+      }
+    },
+    minuteDown: function() {
+      this.minute -= 15;
+
+      if (this.minute < 0) {
+        this.minute = 45;
+        this.hour -= 1;
+      }
+
+      if (minCheck(this.hour, this.minute, this.min)) {
+        this.minute = this.min.minute;
+        this.hour = this.min.hour;
+      }
+    }
   }
 };
 </script>

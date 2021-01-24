@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <p>File: {{ filename }}</p>
-    <p class="link" v-on:click="clearData()">Exit</p>
+    <p class="link" @click="clearData()">Exit</p>
   </div>
 </template>
 

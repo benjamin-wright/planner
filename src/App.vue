@@ -56,7 +56,7 @@ export default {
 <style lang="scss">
 @import "@/scss/colors.scss";
 
-htlm {
+html {
   background: $background-color;
 }
 
@@ -64,6 +64,8 @@ html,
 body,
 #app {
   height: 100%;
+  margin: 0;
+  padding: 0px;
 }
 
 p {

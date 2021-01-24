@@ -31,9 +31,18 @@ export default function run() {
     event.reply("updated-data", manager.data);
   });
 
-  ipcMain.on("new-shift", (event, date) => {
+  ipcMain.on("new-shift", async (event, date) => {
     console.log(`adding new shift for ${date}`);
     manager.newShift(date);
+    await manager.save();
+
+    event.reply("updated-data", manager.data);
+  });
+
+  ipcMain.on("update-shift", async (event, { date, start, end }) => {
+    console.log(`updateing shift ${date}`);
+    manager.updateShift(date, start, end);
+    await manager.save();
 
     event.reply("updated-data", manager.data);
   });

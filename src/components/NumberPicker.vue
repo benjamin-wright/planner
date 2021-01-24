@@ -1,45 +1,28 @@
 <template>
   <div class="panel">
-    <button v-on:click="up()">&#9650;</button>
+    <button @click="$emit('up')" v-focus>&#9650;</button>
     <span>{{ numberString }}</span>
-    <button v-on:click="down()">&#9660;</button>
+    <button @click="$emit('down')">&#9660;</button>
   </div>
 </template>
 
 <script>
+import { zeroPad } from "../services/datetime";
+
 export default {
   name: "NumberPicker",
   props: {
-    number: Number,
-    min: Number,
-    max: Number,
-    increment: Number
-  },
-  data: function() {
-    return {
-      internalNumber: this.number
-    };
+    number: Number
   },
   computed: {
     numberString: function() {
-      if (this.internalNumber < 10) {
-        return `0${this.internalNumber}`;
-      }
-
-      return this.internalNumber.toString();
+      return zeroPad(this.number);
     }
   },
-  methods: {
-    up: function() {
-      this.internalNumber += this.increment;
-      if (this.internalNumber > this.max) {
-        this.internalNumber = this.max;
-      }
-    },
-    down: function() {
-      this.internalNumber -= this.increment;
-      if (this.internalNumber < this.min) {
-        this.internalNumber = this.min;
+  directives: {
+    focus: {
+      inserted: function(el) {
+        el.focus();
       }
     }
   }
