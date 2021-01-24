@@ -19,7 +19,7 @@ export async function promptSavePath() {
   }
 
   return file.filePath;
-};
+}
 
 export async function promptLoadPath() {
   const file = await dialog.showOpenDialog({
